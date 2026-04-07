@@ -1,0 +1,11 @@
+.git
+.gitignore
+.vs
+.idea
+**/bin
+**/obj
+docs
+teapie
+scripts
+README.md
+LICENSE

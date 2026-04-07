@@ -1,73 +1,111 @@
-# OrgUnitAPI - REST API (Organizačná štruktúra firmy)
+# OrgUnitAPI
 
-Implementácia REST API v `.NET 8` + `C#` + `SQL Server`.
+REST API for company organizational structure built with `.NET 8`, `C#`, and `Microsoft SQL Server`.
 
-## Čo je implementované
-- CRUD pre firmy (`companies`)
-- CRUD pre zamestnancov (`employees`)
-- CRUD pre organizačné uzly (`org-units`)
-- strom organizácie firmy (`GET /api/companies/{id}/org-tree`)
-- validácie povinných polí
-- validácie unikátnych kódov/e-mailov
-- validácia, že líder uzla je zamestnanec rovnakej firmy
-- validácia povolenej hierarchie: `Division -> Project -> Department`
-- jednotný error formát cez `ProblemDetails`
-- OpenAPI + Scalar UI
+## Features
+- CRUD for companies (`companies`)
+- CRUD for employees (`employees`)
+- CRUD for organization units (`org-units`)
+- Company organization tree (`GET /api/companies/{id}/org-tree`)
+- Validation for required fields and uniqueness (codes, emails)
+- Validation that unit leader/director belongs to the same company
+- Hierarchy validation: `Division -> Project -> Department`
+- Consistent error responses via `ProblemDetails`
+- OpenAPI + Scalar docs UI
 
-## Štruktúra projektu
-- `src` - API projekt
-- `database/init.sql` - SQL skript na vytvorenie databázy
-- `teapie/CompanyStructure.http` - requesty pre TeaPie testovanie
-- `docs/zadanie.md` - zadanie
-- `docs/knowledge-base/IMPLEMENTATION_PROPOSAL.md` - implementačný návrh
-- `docs/knowledge-base/DATABASE_ANALYSIS.md` - databázová analýza
-- `docs/API_CHECK_GUIDE.md` - kompletný návod na overenie API
+## Project Structure
+- `src` - backend API project
+- `database/init.sql` - SQL schema/bootstrap script
+- `scripts/check_api.sh` - baseline API smoke test
+- `scripts/mock_data_test.sh` - richer integration test
+- `teapie/CompanyStructure.http` - manual API requests
+- `docs/API_CHECK_GUIDE.md` - full validation guide
 
-## Predpoklady
+## Quick Start (Docker, Recommended)
+
+Requirements:
+- Docker Desktop (or Docker Engine) with Compose
+
+1. Optional: configure env values (password/ports):
+```bash
+cp .env.example .env
+```
+2. Start everything:
+```bash
+docker compose up --build -d
+```
+3. Verify containers are up:
+```bash
+docker compose ps
+```
+4. Open API:
+- Base URL: `http://localhost:18080/api`
+- OpenAPI JSON: `http://localhost:18080/openapi/v1.json`
+- Scalar UI: `http://localhost:18080/scalar`
+
+Notes:
+- Database schema is initialized automatically from `database/init.sql`.
+- SQL Server is reachable inside compose network as `db:1433`.
+
+## Run API Tests
+
+Baseline checks:
+```bash
+BASE_URL=http://localhost:18080/api bash scripts/check_api.sh
+```
+
+Extended mock-data checks:
+```bash
+BASE_URL=http://localhost:18080/api bash scripts/mock_data_test.sh
+```
+
+## Stop / Reset
+
+Stop containers:
+```bash
+docker compose down
+```
+
+Stop and remove database volume (full reset):
+```bash
+docker compose down -v --remove-orphans
+```
+
+## Local Run (Without Docker)
+
+Requirements:
 - .NET SDK 8.0+
-- SQL Server Express (alebo iný SQL Server)
+- SQL Server (Express or full)
 
-## Spustenie
-1. Vytvor databázu spustením SQL skriptu `database/init.sql`.
-2. Skontroluj connection string v `src/appsettings.json` a `src/appsettings.Development.json`.
-3. Obnov balíčky:
+1. Create database schema:
+```bash
+sqlcmd -S localhost\\SQLEXPRESS -i database/init.sql
+```
+2. Restore and run:
 ```bash
 dotnet restore src/OrgUnitAPI.csproj
-```
-4. Spusti API:
-```bash
 dotnet run --project src/OrgUnitAPI.csproj
 ```
 
-## Scalar a OpenAPI
-Po štarte API (Development profil):
-- OpenAPI JSON: `https://localhost:7245/openapi/v1.json`
-- Scalar UI: `https://localhost:7245/scalar`
+Default local endpoints (Development):
+- `http://localhost:5132`
+- `https://localhost:7245`
 
-## TeaPie testovanie
-Použi súbor:
-- `teapie/CompanyStructure.http`
+## Troubleshooting
 
-Odporúčaný postup requestov:
-1. Create company
-2. Create employee
-3. Update company (nastaviť director)
-4. Create division
-5. Create project
-6. Create department
-7. Get org-tree
-
-## Poznámka
-Tento workspace nemá nainštalovaný `dotnet` SDK, preto build/run nebol vykonaný lokálne v tomto prostredí. Zdrojové kódy sú pripravené na spustenie v prostredí s .NET 8 a SQL Server.
-
-## Automatické overenie
-- Základný API check:
+If `18080` is already used:
 ```bash
-BASE_URL=http://localhost:5132/api bash scripts/check_api.sh
-```
-- Rozšírený mock-data integračný test:
-```bash
-BASE_URL=http://localhost:5132/api bash scripts/mock_data_test.sh
+API_PORT=18081 docker compose up --build -d
 ```
 
-Pri Docker run-e z tohto overenia použi `BASE_URL=http://localhost:18080/api`.
+If startup fails and you want a clean retry:
+```bash
+docker compose down -v --remove-orphans
+docker compose up --build -d
+```
+
+Check logs:
+```bash
+docker compose logs --tail 200 api
+docker compose logs --tail 200 db
+```

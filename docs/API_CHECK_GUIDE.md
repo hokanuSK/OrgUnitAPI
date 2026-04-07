@@ -33,7 +33,23 @@ dotnet run --project src/OrgUnitAPI.csproj
 - Scalar: `https://localhost:7245/scalar`
 
 ### Option B: Docker (used in live verification)
-- API base URL used: `http://localhost:18080/api`
+1. (Optional) configure env:
+```bash
+cp .env.example .env
+```
+2. Start stack:
+```bash
+docker compose up --build -d
+```
+3. Check state:
+```bash
+docker compose ps
+```
+4. API base URL used: `http://localhost:18080/api`
+5. If `18080` is occupied:
+```bash
+API_PORT=18081 docker compose up --build -d
+```
 
 ## 4. Baseline API Verification
 Run:
@@ -83,10 +99,21 @@ curl -sSL -o /tmp/scalar.html -w '%{http_code}\n' http://localhost:18080/scalar
 ```
 3. Runtime logs (no exceptions):
 ```bash
-docker logs --tail 300 orgunitapi-api 2>&1 | rg -n "fail|exception|crit|Unhandled|500" -i
+docker compose logs --tail 300 api 2>&1 | rg -n "fail|exception|crit|Unhandled|500" -i
 ```
 
-## 7. Live Verification Snapshot
+## 7. Cleanup Commands
+Stop:
+```bash
+docker compose down
+```
+
+Full reset (including DB volume):
+```bash
+docker compose down -v --remove-orphans
+```
+
+## 8. Live Verification Snapshot
 Verified on **April 7, 2026**.
 - Baseline script: passed.
 - Extended mock-data script: passed.
@@ -94,7 +121,7 @@ Verified on **April 7, 2026**.
 - Scalar `/scalar` (follow redirects): `200`.
 - API log scan: no exception/error matches.
 
-## 8. Pass Criteria
+## 9. Pass Criteria
 Mark the API as verified when:
 - Baseline script passes.
 - Extended mock-data script passes.
