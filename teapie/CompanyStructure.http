@@ -1,0 +1,84 @@
+@baseUrl = https://localhost:7245/api
+@companyId = 1
+@directorId = 1
+@divisionId = 1
+@projectId = 2
+@departmentId = 3
+
+### 1) Create company
+POST {{baseUrl}}/companies
+Content-Type: application/json
+
+{
+  "code": "KROS",
+  "name": "KROS a.s."
+}
+
+### 2) Create employee (director candidate)
+POST {{baseUrl}}/companies/{{companyId}}/employees
+Content-Type: application/json
+
+{
+  "title": "Ing.",
+  "firstName": "Jan",
+  "lastName": "Novak",
+  "phone": "+421900111222",
+  "email": "jan.novak@kros.sk"
+}
+
+### 3) Set company director
+PUT {{baseUrl}}/companies/{{companyId}}
+Content-Type: application/json
+
+{
+  "code": "KROS",
+  "name": "KROS a.s.",
+  "directorEmployeeId": {{directorId}}
+}
+
+### 4) Create division
+POST {{baseUrl}}/companies/{{companyId}}/org-units
+Content-Type: application/json
+
+{
+  "unitType": "Division",
+  "code": "DIV-IT",
+  "name": "IT Division",
+  "leaderEmployeeId": {{directorId}}
+}
+
+### 5) Create project under division
+POST {{baseUrl}}/companies/{{companyId}}/org-units
+Content-Type: application/json
+
+{
+  "unitType": "Project",
+  "parentOrgUnitId": {{divisionId}},
+  "code": "PRJ-ERP",
+  "name": "ERP Platform",
+  "leaderEmployeeId": {{directorId}}
+}
+
+### 6) Create department under project
+POST {{baseUrl}}/companies/{{companyId}}/org-units
+Content-Type: application/json
+
+{
+  "unitType": "Department",
+  "parentOrgUnitId": {{projectId}},
+  "code": "DEP-BE",
+  "name": "Backend Department",
+  "leaderEmployeeId": {{directorId}}
+}
+
+### 7) Read org tree
+GET {{baseUrl}}/companies/{{companyId}}/org-tree
+
+### 8) List employees by company
+GET {{baseUrl}}/companies/{{companyId}}/employees
+
+### 9) List org units by company
+GET {{baseUrl}}/companies/{{companyId}}/org-units
+
+### 10) Cleanup sample department
+DELETE {{baseUrl}}/org-units/{{departmentId}}
