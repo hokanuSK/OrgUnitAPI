@@ -13,9 +13,9 @@ Based on `docs/zadanie.md`, verify:
 - Solution: `OrgUnitAPI.sln`
 - API project: `src/OrgUnitAPi/OrgUnitAPI.csproj`
 - SQL schema: `database/init.sql`
-- TeaPie requests: `teapie/CompanyStructure.http`
-- Baseline check script: `scripts/check_api.sh`
-- Extended mock-data script: `scripts/mock_data_test.sh`
+- TeaPie requests: `test/teapie/CompanyStructure.http`
+- Baseline check script: `test/scripts/check_api.sh`
+- Extended mock-data script: `test/scripts/mock_data_test.sh`
 
 ## 3. Run API
 ### Option A: local .NET + local SQL Server
@@ -54,7 +54,7 @@ API_PORT=18081 docker compose up --build -d
 ## 4. Baseline API Verification
 Run:
 ```bash
-BASE_URL=http://localhost:18080/api bash scripts/check_api.sh
+BASE_URL=http://localhost:18080/api bash test/scripts/check_api.sh
 ```
 
 Expected baseline statuses:
@@ -70,7 +70,7 @@ Expected baseline statuses:
 ## 5. Rich Mock-Data Regression Test
 Run:
 ```bash
-BASE_URL=http://localhost:18080/api bash scripts/mock_data_test.sh
+BASE_URL=http://localhost:18080/api bash test/scripts/mock_data_test.sh
 ```
 
 This test validates:

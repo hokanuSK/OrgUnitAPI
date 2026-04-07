@@ -16,9 +16,9 @@ REST API for company organizational structure built with `.NET 8`, `C#`, and `Mi
 ## Project Structure
 - `src` - backend API project
 - `database/init.sql` - SQL schema/bootstrap script
-- `scripts/check_api.sh` - baseline API smoke test
-- `scripts/mock_data_test.sh` - richer integration test
-- `teapie/CompanyStructure.http` - manual API requests
+- `test/scripts/check_api.sh` - baseline API smoke test
+- `test/scripts/mock_data_test.sh` - richer integration test
+- `test/teapie/CompanyStructure.http` - manual API requests
 - `docs/API_CHECK_GUIDE.md` - full validation guide
 
 ## Quick Start (Docker, Recommended)
@@ -51,12 +51,12 @@ Notes:
 
 Baseline checks:
 ```bash
-BASE_URL=http://localhost:18080/api bash scripts/check_api.sh
+BASE_URL=http://localhost:18080/api bash test/scripts/check_api.sh
 ```
 
 Extended mock-data checks:
 ```bash
-BASE_URL=http://localhost:18080/api bash scripts/mock_data_test.sh
+BASE_URL=http://localhost:18080/api bash test/scripts/mock_data_test.sh
 ```
 
 ## Stop / Reset
