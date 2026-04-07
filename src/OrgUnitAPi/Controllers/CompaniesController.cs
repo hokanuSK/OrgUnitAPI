@@ -6,7 +6,7 @@ namespace CompanyStructure.Api.Controllers;
 
 [ApiController]
 [Route("api/companies")]
-public sealed class CompaniesController(CompanyService companyService) : ControllerBase
+public sealed class CompaniesController(ICompanyService companyService) : ControllerBase
 {
     [HttpPost]
     [ProducesResponseType(typeof(CompanyResponse), StatusCodes.Status201Created)]

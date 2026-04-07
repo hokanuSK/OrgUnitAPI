@@ -6,7 +6,7 @@ namespace CompanyStructure.Api.Controllers;
 
 [ApiController]
 [Route("api")]
-public sealed class OrgUnitsController(OrgUnitService orgUnitService) : ControllerBase
+public sealed class OrgUnitsController(IOrgUnitService orgUnitService) : ControllerBase
 {
     [HttpPost("companies/{companyId:int}/org-units")]
     [ProducesResponseType(typeof(OrgUnitResponse), StatusCodes.Status201Created)]

@@ -37,9 +37,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-builder.Services.AddScoped<CompanyService>();
-builder.Services.AddScoped<EmployeeService>();
-builder.Services.AddScoped<OrgUnitService>();
+builder.Services.AddScoped<ICompanyService, CompanyService>();
+builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+builder.Services.AddScoped<IOrgUnitService, OrgUnitService>();
 
 var app = builder.Build();
 

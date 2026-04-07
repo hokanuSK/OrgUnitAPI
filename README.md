@@ -83,8 +83,8 @@ sqlcmd -S localhost\\SQLEXPRESS -i database/init.sql
 ```
 2. Restore and run:
 ```bash
-dotnet restore src/OrgUnitAPI.csproj
-dotnet run --project src/OrgUnitAPI.csproj
+dotnet restore src/OrgUnitAPi/OrgUnitAPI.csproj
+dotnet run --project src/OrgUnitAPi/OrgUnitAPI.csproj
 ```
 
 Default local endpoints (Development):

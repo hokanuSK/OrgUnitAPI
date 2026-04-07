@@ -11,7 +11,7 @@ Based on `docs/zadanie.md`, verify:
 
 ## 2. Current Project Paths
 - Solution: `OrgUnitAPI.sln`
-- API project: `src/OrgUnitAPI.csproj`
+- API project: `src/OrgUnitAPi/OrgUnitAPI.csproj`
 - SQL schema: `database/init.sql`
 - TeaPie requests: `teapie/CompanyStructure.http`
 - Baseline check script: `scripts/check_api.sh`
@@ -25,8 +25,8 @@ sqlcmd -S localhost\\SQLEXPRESS -i database/init.sql
 ```
 2. Start API:
 ```bash
-dotnet restore src/OrgUnitAPI.csproj
-dotnet run --project src/OrgUnitAPI.csproj
+dotnet restore src/OrgUnitAPi/OrgUnitAPI.csproj
+dotnet run --project src/OrgUnitAPi/OrgUnitAPI.csproj
 ```
 3. API docs:
 - OpenAPI JSON: `https://localhost:7245/openapi/v1.json`

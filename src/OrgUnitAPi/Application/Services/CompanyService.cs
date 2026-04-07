@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CompanyStructure.Api.Application.Services;
 
-public sealed class CompanyService(AppDbContext dbContext)
+public sealed class CompanyService(AppDbContext dbContext) : ICompanyService
 {
     public async Task<CompanyResponse> CreateAsync(CreateCompanyRequest request, CancellationToken cancellationToken)
     {

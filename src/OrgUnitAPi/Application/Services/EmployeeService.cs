@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CompanyStructure.Api.Application.Services;
 
-public sealed class EmployeeService(AppDbContext dbContext)
+public sealed class EmployeeService(AppDbContext dbContext) : IEmployeeService
 {
     public async Task<EmployeeResponse> CreateAsync(int companyId, CreateEmployeeRequest request, CancellationToken cancellationToken)
     {

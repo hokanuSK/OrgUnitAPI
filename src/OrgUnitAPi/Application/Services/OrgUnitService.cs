@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CompanyStructure.Api.Application.Services;
 
-public sealed class OrgUnitService(AppDbContext dbContext)
+public sealed class OrgUnitService(AppDbContext dbContext) : IOrgUnitService
 {
     public async Task<OrgUnitResponse> CreateAsync(int companyId, CreateOrgUnitRequest request, CancellationToken cancellationToken)
     {

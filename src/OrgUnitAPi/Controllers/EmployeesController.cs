@@ -6,7 +6,7 @@ namespace CompanyStructure.Api.Controllers;
 
 [ApiController]
 [Route("api")]
-public sealed class EmployeesController(EmployeeService employeeService) : ControllerBase
+public sealed class EmployeesController(IEmployeeService employeeService) : ControllerBase
 {
     [HttpPost("companies/{companyId:int}/employees")]
     [ProducesResponseType(typeof(EmployeeResponse), StatusCodes.Status201Created)]
