@@ -1,0 +1,57 @@
+erDiagram
+    Companies {
+        int CompanyId PK
+        nvarchar Code UK
+        nvarchar Name
+        int DirectorEmployeeId FK
+        datetime CreatedAt
+        datetime UpdatedAt
+        rowversion RowVersion
+    }
+
+    Employees {
+        int EmployeeId PK
+        int CompanyId FK
+        nvarchar Title
+        nvarchar FirstName
+        nvarchar LastName
+        nvarchar Phone
+        nvarchar Email
+        bit IsActive
+        datetime CreatedAt
+        datetime UpdatedAt
+        rowversion RowVersion
+    }
+
+    OrgUnits {
+        int OrgUnitId PK
+        int CompanyId FK
+        int ParentOrgUnitId FK
+        varchar UnitType
+        nvarchar Code
+        nvarchar Name
+        int LeaderEmployeeId FK
+        datetime CreatedAt
+        datetime UpdatedAt
+        rowversion RowVersion
+    }
+
+    EmployeeOrgUnitAssignments {
+        int EmployeeId PK
+        int OrgUnitId PK
+        int CompanyId FK
+        date AssignedFrom PK
+        date AssignedTo
+        bit IsPrimary
+    }
+
+    Companies ||--o{ Employees : "CompanyId"
+    Companies ||--o{ OrgUnits : "CompanyId"
+
+    Companies o|--o| Employees : "DirectorEmployeeId (same CompanyId)"
+    Employees ||--o{ OrgUnits : "LeaderEmployeeId (same CompanyId)"
+
+    OrgUnits ||--o{ OrgUnits : "ParentOrgUnitId (self-reference, same CompanyId)"
+
+    Employees ||--o{ EmployeeOrgUnitAssignments : "(CompanyId, EmployeeId)"
+    OrgUnits ||--o{ EmployeeOrgUnitAssignments : "(CompanyId, OrgUnitId)"
